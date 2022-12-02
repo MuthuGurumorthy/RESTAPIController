@@ -15,6 +15,13 @@ public class MyController {
     public List<User> getUsers(){
         return new ArrayList<>(Users.values());
     }
+
+    @GetMapping("/get_user/{id}")
+    public List<User> getUsers(@PathVariable (value = "id") int id){
+        ArrayList<User> users=new ArrayList<>();
+        users.add(Users.get(id));
+        return users;
+    }
     @PostMapping("/add_user")
     public String addUsers(@RequestParam (value = "id",defaultValue = "1")int id,
                          @RequestParam(value="name",defaultValue = "default")String name,
@@ -23,6 +30,12 @@ public class MyController {
         User user=new User(id,name,number,mail);
         Users.put(id,user);
         return ("Added "+name+" successfully");
+    }
+
+    @PostMapping("/add_users")
+    public String addUsers(@RequestBody() User user){
+        Users.put(user.getId(),user);
+        return ("Added "+user.getName()+" succesfully");
     }
     @PutMapping("/update_user")
     public String updateUser(@RequestParam("id")int id,
